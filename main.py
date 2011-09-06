@@ -39,14 +39,13 @@ def hashAndAdd(file):
 	dbconn.commit()
 
 # Initial setup of DB & search path
-os.chdir(sys.argv[1])
-dbPath = "mp3dedup.db"
+dbPath = os.path.abspath("mp3dedup.db")
 dbconn = db.startDB(dbPath)
 dbcursor = dbconn.cursor()
 # End initial setup
 
 # Walk the directory structure looking for MP3 files
-for root, subfolders, files in os.walk('.'):
+for root, subfolders, files in os.walk(sys.argv[1]):
 	# Mention what path we're working in.
 	print("Working in", os.path.abspath(root))
 	# Since root contains the working folder, and we'll move onto subfolders later, 
