@@ -40,7 +40,7 @@ def hashAndAdd(file):
 
 # Initial setup of DB & search path
 os.chdir(sys.argv[1])
-dbPath = "/home/kyl191/mp3dedup/mp3dedup.db"
+dbPath = "mp3dedup.db"
 dbconn = db.startDB(dbPath)
 dbcursor = dbconn.cursor()
 # End initial setup
