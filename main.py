@@ -40,6 +40,8 @@ def hashAndAdd(file):
 
 # Initial setup of DB & search path
 dbPath = os.path.abspath("mp3dedup.db")
+if not os.path.isfile(dbPath):
+	db.createDB(dbPath)
 dbconn = db.startDB(dbPath)
 dbcursor = dbconn.cursor()
 # End initial setup
