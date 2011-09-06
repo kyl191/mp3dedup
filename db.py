@@ -1,15 +1,18 @@
 import sqlite3
-"""
-DB definition:
-CREATE TABLE mp3dedup (
+
+def createDB(dbPath):
+	conn = sqlite3.connect(dbPath)
+	conn.text_factory = unicode
+	c = conn.cursor()
+	c.execute("""CREATE TABLE mp3dedup (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "id3_title" TEXT,
     "id3_artist" TEXT,
     "id3_album" TEXT,
     "hash" TEXT,
-    "filepath" TEXT
-, "mtime" INTEGER)
-"""
+    "filepath" TEXT,
+    "mtime" INTEGER)""")
+
 def startDB(dbPath):
 	try:
 		conn = sqlite3.connect(dbPath)
