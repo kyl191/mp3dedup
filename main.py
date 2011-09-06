@@ -34,7 +34,7 @@ def hashAndAdd(file):
 		print(info,"Ins")
 		db.insertIntoDB(dbcursor, info)
 	else:
-		print(info,"upd")
+		#print(info,"upd")
 		db.updateDB(dbcursor, info)
 	dbconn.commit()
 
