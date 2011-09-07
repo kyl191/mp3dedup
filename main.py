@@ -1,7 +1,7 @@
 import db, hash, mp3, os, sys, re
 from os.path import join
 from collections import namedtuple
-mp3info = namedtuple('mp3info', "title artist album hash filepath mtime")
+mp3info = namedtuple('mp3info', "title artist album strippedhash originalhash filepath mtime")
 
 def hashAndAdd(file):
 	# Check if it's a valid MP3 file first by trying to get the ID3 info
@@ -26,10 +26,11 @@ def hashAndAdd(file):
 			update = True
 	
 	tempfile = mp3.stripid3(file)
-	hashresult = hash.sha512file(tempfile[1])
+	strippedhash = hash.sha512file(tempfile[1])
 	os.close(tempfile[0])
 	os.remove(tempfile[1])
-	info = mp3info(title, artist, album, unicode(hashresult), unicode(str(os.path.abspath(file)).decode('utf-8')), mtime)
+	originalhash = hash.sha512file(file)
+	info = mp3info(title, artist, album, unicode(strippedhash), unicode(originalhash), unicode(str(os.path.abspath(file)).decode('utf-8')), mtime)
 	if not update:
 		print(info,"Ins")
 		db.insertIntoDB(dbcursor, info)
@@ -38,7 +39,8 @@ def hashAndAdd(file):
 		db.updateDB(dbcursor, info)
 	dbconn.commit()
 
-# Initial setup of DB & search path
+# Initial setup of DB
+# We keep the connection & cursor seperate so we can do commits when we want
 dbPath = os.path.abspath("mp3dedup.db")
 if not os.path.isfile(dbPath):
 	db.createDB(dbPath)

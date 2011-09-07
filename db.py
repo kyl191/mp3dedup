@@ -9,7 +9,8 @@ def createDB(dbPath):
     "id3_title" TEXT,
     "id3_artist" TEXT,
     "id3_album" TEXT,
-    "hash" TEXT,
+    "strippedhash" TEXT,
+    "originalhash" TEXT,
     "filepath" TEXT,
     "mtime" INTEGER)""")
 
@@ -30,9 +31,9 @@ def startDB(dbPath):
 	return conn
 
 def insertIntoDB(db, info):
-	# info = title, artist, album, hash, filepath, mtime
+	# info = title, artist, album, strippedhash, originalhash, filepath, mtime
 	try:
-		db.execute(u"INSERT into mp3dedup VALUES (Null, ?, ?, ?, ?, ?, ?)",info)
+		db.execute(u"INSERT into mp3dedup VALUES (Null, ?, ?, ?, ?, ?, ?, ?)",info)
 	except sqlite3.Error as e:
 		print("SQLite 3: Unknown Error", e.args[0])
 	return info
